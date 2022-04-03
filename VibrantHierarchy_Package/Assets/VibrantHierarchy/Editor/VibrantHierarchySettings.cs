@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace VibrantHierarchy.Editor
 {
-    [CreateAssetMenu(menuName = "ArcticFox/VibrantHierarchy/CreateSettings", fileName = "VibrantHierarchySettings")]
     public class VibrantHierarchySettings : ScriptableObject
     {
         private const string MyCustomSettingsPath = "Assets/VibrantHierarchy/Editor/VibrantHierarchySettings.asset";
@@ -28,7 +27,6 @@ namespace VibrantHierarchy.Editor
             return new SerializedObject(GetOrCreateSettings());
         }
 
-        [MenuItem("ArcticFox/Vibrant Hierarchy/Create Settings")]
         private static VibrantHierarchySettings CreateNewSettings()
         {
             VibrantHierarchySettings settings;

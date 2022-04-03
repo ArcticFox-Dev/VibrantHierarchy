@@ -10,13 +10,18 @@ namespace VibrantHierarchy.Editor
         private static bool Registered;
         static VibrantHierarchyRenderer()
         {
-            RegisterRenderer();
+            RegisterRenderer(false);
         }
 
-        [MenuItem("ArcticFox/Vibrant Hierarchy/Restart Plugin")]
-        private static void RegisterRenderer()
+        [MenuItem("ArcticFox/Vibrant Hierarchy/Start Plugin")]
+        private static void RestartPlugin()
         {
-            LoadSettings();
+            RegisterRenderer(true);
+        }
+        
+        private static void RegisterRenderer(bool manual)
+        {
+            LoadSettings(manual);
             if (Settings != null && !Registered)
             {
                 EditorApplication.hierarchyWindowItemOnGUI += HandleHierarchyWindowItemOnGUI;
@@ -24,7 +29,10 @@ namespace VibrantHierarchy.Editor
             }
             else
             {
-                Debug.LogError("Could not start Hierarchy Rendering as the Settings are not presents in the project.\nCreate the VibrantHierarchySettings and try again.");
+                if (manual)
+                {
+                    Debug.LogError("Could not start Hierarchy Rendering as the Settings are not presents in the project.\nCreate the VibrantHierarchySettings and try again.");
+                }
             }
         }
 
@@ -61,13 +69,20 @@ namespace VibrantHierarchy.Editor
             EditorGUI.LabelField(rectangle, item.name, labelGUIStyle);
         }
 
-        private static void LoadSettings()
+        private static void LoadSettings(bool createIfMissing)
         {
             var settingsPaths = AssetDatabase.FindAssets($"t:{nameof(VibrantHierarchySettings)}");
             if (settingsPaths.Length == 1)
             {
                 var assetPath = AssetDatabase.GUIDToAssetPath(settingsPaths[0]);
                 Settings = AssetDatabase.LoadAssetAtPath<VibrantHierarchySettings>(assetPath);
+            }
+            else
+            {
+                if (createIfMissing)
+                {
+                    Settings = VibrantHierarchySettings.GetOrCreateSettings();
+                }
             }
         }
     }
