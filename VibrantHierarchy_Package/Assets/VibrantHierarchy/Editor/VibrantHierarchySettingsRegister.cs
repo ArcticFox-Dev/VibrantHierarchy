@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.UIElements;
+using UnityEngine.UIElements;
 
 namespace VibrantHierarchy.Editor
 {
@@ -16,14 +17,28 @@ namespace VibrantHierarchy.Editor
                 // activateHandler is called when the user clicks on the Settings item in the Settings window.
                 activateHandler = (searchContext, rootElement) =>
                 {
-                    var settings = VibrantHierarchySettings.GetSerializedSettings();
-
-                    // rootElement is a VisualElement. If you add any children to it, the OnGUI function
-                    // isn't called because the SettingsProvider uses the UIElements drawing framework.
-
-                    rootElement.Add(new PropertyField(settings.FindProperty("Styles")));
-
-                    rootElement.Bind(settings);
+                    var settingsPaths = AssetDatabase.FindAssets($"t:{nameof(VibrantHierarchySettings)}");
+                    if (settingsPaths.Length == 1)
+                    {
+                        DrawStylesSettings(rootElement);
+                    }
+                    else
+                    {
+                        var textBox = new TextField();
+                        textBox.value = "It seems you haven't started the plugin in this project yet.";
+                        textBox.SetEnabled(false);
+                        var button = new Button();
+                        button.text = "Start Plugin";
+                        button.clicked += () =>
+                        {
+                            VibrantHierarchySettings.GetOrCreateSettings();
+                            VibrantHierarchyRenderer.RegisterRenderer();
+                            rootElement.Clear();
+                            DrawStylesSettings(rootElement);
+                        };
+                        rootElement.Add(textBox);
+                        rootElement.Add(button);
+                    }
                 },
 
                 // Populate the search keywords to enable smart search filtering and label highlighting:
@@ -31,6 +46,15 @@ namespace VibrantHierarchy.Editor
             };
 
             return provider;
+        }
+
+        private static void DrawStylesSettings(VisualElement rootElement)
+        {
+            var settings = VibrantHierarchySettings.GetSerializedSettings();
+
+            rootElement.Add(new PropertyField(settings.FindProperty("Styles")));
+
+            rootElement.Bind(settings);
         }
     }
 }
