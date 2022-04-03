@@ -1,0 +1,39 @@
+# The name of the work flow. Badges will use this name
+name: 'Publish Snapshot'
+
+on:
+  push:
+    branches:
+      - 'develop' 
+
+jobs:
+  publish-snapshot:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Tag Package Manifest
+      uses: ArcticFox-Dev/UpmManifestTools@develop
+      with:
+        dir: ${{ './VibrantHierarchy_Package/Assets/VibrantHierarchy' }}
+        action: 'snapshot'
+
+    - name: Setup Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: 10
+    
+    - name: Node Install
+      run: npm install
+    
+    - name: Push to UPM registry
+      uses: JS-DevTools/npm-publish@v1
+      with:
+        token: ${{ secrets.NPM_TOKEN }}
+        registry: ${{ 'http://upm.randhall.net' }}
+        package: ${{ './VibrantHierarchy_Package/Assets/VibrantHierarchy/package.json' }}
