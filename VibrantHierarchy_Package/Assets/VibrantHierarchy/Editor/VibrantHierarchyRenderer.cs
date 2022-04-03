@@ -54,6 +54,10 @@ namespace VibrantHierarchy.Editor
                 var assetPath = AssetDatabase.GUIDToAssetPath(settingsPaths[0]);
                 Settings = AssetDatabase.LoadAssetAtPath<VibrantHierarchySettings>(assetPath);
             }
+            else
+            {
+                Settings = VibrantHierarchySettings.GetOrCreateSettings();
+            }
         }
     }
 }
