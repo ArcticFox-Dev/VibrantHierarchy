@@ -12,26 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b0591e33e141fe9e7f7183bb52a62b, type: 3}
   m_Name: VibrantHierarchySettings
   m_EditorClassIdentifier: 
-  Styles:
-  - Token: Zenject
-    BackgroundColor:
-      serializedVersion: 2
-      rgba: 4281138619
-    TextColor:
-      serializedVersion: 2
-      rgba: 4278190080
-    Font: {fileID: 0}
-    FontSize: 14
-    FontStyle: 1
-    Alignment: 4
-  - Token: Camera Setup
-    BackgroundColor:
-      serializedVersion: 2
-      rgba: 4278236159
-    TextColor:
-      serializedVersion: 2
-      rgba: 4278190080
-    Font: {fileID: 0}
-    FontSize: 14
-    FontStyle: 1
-    Alignment: 4
+  Styles: []

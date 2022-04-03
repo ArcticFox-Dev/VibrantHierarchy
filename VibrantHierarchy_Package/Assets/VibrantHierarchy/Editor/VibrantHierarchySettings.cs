@@ -4,11 +4,12 @@ using UnityEngine;
 
 namespace VibrantHierarchy.Editor
 {
+    [CreateAssetMenu(menuName = "ArcticFox/VibrantHierarchy/CreateSettings", fileName = "VibrantHierarchySettings")]
     public class VibrantHierarchySettings : ScriptableObject
     {
-        private const string MyCustomSettingsPath = "/VibrantHierarchy/Editor/VibrantHierarchySettings.asset";
+        private const string MyCustomSettingsPath = "Assets/VibrantHierarchy/Editor/VibrantHierarchySettings.asset";
 
-        public List<VibrantStyle> Styles;
+        public List<VibrantStyle> Styles = new List<VibrantStyle>();
         internal static VibrantHierarchySettings GetOrCreateSettings()
         {
             var settingsPaths = AssetDatabase.FindAssets($"t:{nameof(VibrantHierarchySettings)}");
@@ -27,12 +28,13 @@ namespace VibrantHierarchy.Editor
             return new SerializedObject(GetOrCreateSettings());
         }
 
+        [MenuItem("ArcticFox/Vibrant Hierarchy/Create Settings")]
         private static VibrantHierarchySettings CreateNewSettings()
         {
             VibrantHierarchySettings settings;
             settings = ScriptableObject.CreateInstance<VibrantHierarchySettings>();
 
-            AssetDatabase.CreateAsset(settings, $"{Application.dataPath}{MyCustomSettingsPath}");
+            AssetDatabase.CreateAsset(settings, MyCustomSettingsPath);
             AssetDatabase.SaveAssets();
             return settings;
         }

@@ -7,10 +7,25 @@ namespace VibrantHierarchy.Editor
     public static class VibrantHierarchyRenderer
     {
         private static VibrantHierarchySettings Settings;
+        private static bool Registered;
         static VibrantHierarchyRenderer()
         {
-            EditorApplication.hierarchyWindowItemOnGUI += HandleHierarchyWindowItemOnGUI;
+            RegisterRenderer();
+        }
+
+        [MenuItem("ArcticFox/Vibrant Hierarchy/Restart Plugin")]
+        private static void RegisterRenderer()
+        {
             LoadSettings();
+            if (Settings != null && !Registered)
+            {
+                EditorApplication.hierarchyWindowItemOnGUI += HandleHierarchyWindowItemOnGUI;
+                Registered = true;
+            }
+            else
+            {
+                Debug.LogError("Could not start Hierarchy Rendering as the Settings are not presents in the project.\nCreate the VibrantHierarchySettings and try again.");
+            }
         }
 
         private static void HandleHierarchyWindowItemOnGUI(int instanceID, Rect selectionRect)
@@ -53,10 +68,6 @@ namespace VibrantHierarchy.Editor
             {
                 var assetPath = AssetDatabase.GUIDToAssetPath(settingsPaths[0]);
                 Settings = AssetDatabase.LoadAssetAtPath<VibrantHierarchySettings>(assetPath);
-            }
-            else
-            {
-                Settings = VibrantHierarchySettings.GetOrCreateSettings();
             }
         }
     }
