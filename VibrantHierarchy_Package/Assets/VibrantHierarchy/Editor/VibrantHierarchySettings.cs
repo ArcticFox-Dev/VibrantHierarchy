@@ -6,9 +6,9 @@ namespace VibrantHierarchy.Editor
 {
     public class VibrantHierarchySettings : ScriptableObject
     {
-        private const string MyCustomSettingsPath = "Assets/VibrantHierarchy/Editor/VibrantHierarchySettings.asset";
+        private const string MyCustomSettingsPath = "Assets/VibrantHierarchySettings.asset";
 
-        public List<VibrantStyle> Styles;
+        public List<VibrantStyle> Styles = new List<VibrantStyle>();
         internal static VibrantHierarchySettings GetOrCreateSettings()
         {
             var settingsPaths = AssetDatabase.FindAssets($"t:{nameof(VibrantHierarchySettings)}");

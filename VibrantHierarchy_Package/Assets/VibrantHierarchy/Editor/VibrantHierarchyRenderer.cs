@@ -7,10 +7,20 @@ namespace VibrantHierarchy.Editor
     public static class VibrantHierarchyRenderer
     {
         private static VibrantHierarchySettings Settings;
+        private static bool Registered;
         static VibrantHierarchyRenderer()
         {
-            EditorApplication.hierarchyWindowItemOnGUI += HandleHierarchyWindowItemOnGUI;
+            RegisterRenderer();
+        }
+
+        internal static void RegisterRenderer()
+        {
             LoadSettings();
+            if (Settings != null && !Registered)
+            {
+                EditorApplication.hierarchyWindowItemOnGUI += HandleHierarchyWindowItemOnGUI;
+                Registered = true;
+            }
         }
 
         private static void HandleHierarchyWindowItemOnGUI(int instanceID, Rect selectionRect)
