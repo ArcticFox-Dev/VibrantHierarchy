@@ -1,6 +1,6 @@
 {
   "name": "com.arcticfox.vibranthierarchy",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A small package that allows you to color game objects in the hierarchy based on their names.",
   "displayName": "Vibrant Hierarchy",
   "unity": "2021.2",
